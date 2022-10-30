@@ -1,6 +1,7 @@
 .carousel-image:after {
   content: "";
   position: absolute;
+  border-radius: 12px;
   left: 0;
   top: 0;
   width: 100%;
