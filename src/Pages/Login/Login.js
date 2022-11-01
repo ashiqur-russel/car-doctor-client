@@ -1,15 +1,31 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import login from "../../assets/images/login/login.svg";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import loginImage from "../../assets/images/login/login.svg";
+import { AuthContext } from "../../contexts/AuthProvider";
 const Login = () => {
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
   const handleLogin = (event) => {
     event.preventDefault();
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    console.log(email, password);
+    login(email, password)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        navigate("/");
+      })
+      .then((err) => {
+        console.log(err);
+      });
   };
   return (
     <div className="hero w-full my-20">
       <div className="hero-content grid gap-20 md:grid-cols-2 flex-col lg:flex-row ">
         <div className="text-center lg:text-left">
-          <img className="w-3/4" src={login} alt="login" />
+          <img className="w-3/4" src={loginImage} alt="login" />
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 py-20">
           <h1 className="text-5xl font-bold text-center">Login </h1>
@@ -21,6 +37,7 @@ const Login = () => {
               </label>
               <input
                 type="text"
+                name="email"
                 placeholder="email"
                 className="input input-bordered"
               />
@@ -31,6 +48,7 @@ const Login = () => {
               </label>
               <input
                 type="text"
+                name="password"
                 placeholder="password"
                 className="input input-bordered"
               />
