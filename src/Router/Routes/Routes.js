@@ -3,6 +3,7 @@ import Main from "../../Layout/Main";
 import Checkout from "../../Pages/Checkout/Checkout";
 import Home from "../../Pages/Home/Home";
 import Login from "../../Pages/Login/Login";
+import Orders from "../../Pages/Orders/Orders";
 import Signup from "../../Pages/Signup/Signup";
 export const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
         loader: ({ params }) => {
           return fetch(`http://localhost:5001/services/${params.id}`);
         },
+      },
+      {
+        path: "/orders",
+        element: <Orders></Orders>,
       },
     ],
   },

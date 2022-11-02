@@ -8,6 +8,7 @@ const Header = () => {
       <li className="font-smibold">
         <Link to="/">Home</Link>
         <Link to="/login">Login</Link>
+        <Link to="/orders">Orders</Link>
       </li>
     </>
   );
