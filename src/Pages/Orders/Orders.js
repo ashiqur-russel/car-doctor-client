@@ -5,7 +5,6 @@ import OrderTable from "./OrderTable";
 const Orders = () => {
   const { user } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
-  console.log(orders);
   useEffect(() => {
     fetch(`http://localhost:5001/orders?email=${user?.email}`)
       .then((res) => res.json())
@@ -14,11 +13,32 @@ const Orders = () => {
       })
       .then((err) => console.log(err));
   }, [user?.email]);
+
+  const handleDelete = (id) => {
+    console.log("Order delete clicked", id);
+    const proceed = window.confirm(
+      "Are you sure, you want to delete this order"
+    );
+
+    if (proceed) {
+      fetch(`http://localhost:5001/orders/${id}`, {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data.deletedCount > 0) {
+            alert("Deleted Successfully");
+            const remaining = orders.filter((odr) => odr._id !== id);
+            setOrders(remaining);
+          }
+        })
+        .then((err) => console.log(err));
+    }
+  };
   return (
     <div className="overflow-x-auto w-full">
-      <h2>Oeders: {orders.length}</h2>
-
-      <table className="table w-full">
+      <table className="table w-full mt-10 mb-10">
         <thead>
           <tr className="">
             <th>
@@ -34,7 +54,11 @@ const Orders = () => {
         </thead>
         <tbody>
           {orders.map((order) => (
-            <OrderTable key={order._id} order={order}></OrderTable>
+            <OrderTable
+              key={order._id}
+              order={order}
+              handleDelete={handleDelete}
+            ></OrderTable>
           ))}
         </tbody>
       </table>

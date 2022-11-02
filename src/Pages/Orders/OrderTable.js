@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const OrderTable = ({ order }) => {
+const OrderTable = ({ order, handleDelete }) => {
   const { serviceName, price, customer, phone, service, _id } = order;
   const [orderService, setOrderService] = useState([]);
   useEffect(() => {
@@ -9,20 +9,6 @@ const OrderTable = ({ order }) => {
     );
   }, [service]);
 
-  const handleDelete = (id) => {
-    const proceed = window.confirm(
-      "Are you sure, you want to delete this order"
-    );
-
-    if (proceed) {
-      fetch(`http://localhost:5001/orders/${id}`, {
-        method: "DELETE",
-      })
-        .then((res) => res.json())
-        .then((data) => console.log(data))
-        .then((err) => console.log(err));
-    }
-  };
   return (
     <tr>
       <th>
