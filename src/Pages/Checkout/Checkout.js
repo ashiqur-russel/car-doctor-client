@@ -23,7 +23,27 @@ const Checkout = () => {
       message,
     };
 
-    console.log(order);
+    //console.log(order);
+    /*  if (phone.length < 10) {
+      alert("Phone Number should be 10 charactes or longer");
+    } */
+    fetch("http://localhost:5001/orders", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(order),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.acknowledged) {
+          alert("Order Places Successfully!");
+
+          form.reset();
+        }
+      })
+      .then((err) => console.log(err));
   };
   return (
     <div>
@@ -49,6 +69,7 @@ const Checkout = () => {
             name="phone"
             placeholder="Your Phone"
             className="input input-bordered w-full"
+            required
           />
           <input
             type="text"
@@ -64,6 +85,7 @@ const Checkout = () => {
           name="message"
           className="textarea textarea-bordered h-24 w-full"
           placeholder="Type Your Message"
+          required
         ></textarea>
         <input className="btn mb-10" type="submit" value="Place your order" />
       </form>
