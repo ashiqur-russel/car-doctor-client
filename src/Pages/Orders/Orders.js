@@ -36,6 +36,27 @@ const Orders = () => {
         .then((err) => console.log(err));
     }
   };
+
+  const handleStatusUpdate = (id) => {
+    fetch(`http://localhost:5001/orders/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ status: "Approved" }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.modifiedCount > 0) {
+          const remaining = orders.filter((odr) => odr._id !== id);
+          const approved = orders.find((odr) => odr._id === id);
+          approved.status = "Approved";
+          const newOrder = [approved, ...remaining];
+          setOrders(newOrder);
+        }
+      });
+  };
   return (
     <div className="overflow-x-auto w-full">
       <table className="table w-full mt-10 mb-10">
@@ -58,6 +79,7 @@ const Orders = () => {
               key={order._id}
               order={order}
               handleDelete={handleDelete}
+              handleStatusUpdate={handleStatusUpdate}
             ></OrderTable>
           ))}
         </tbody>
