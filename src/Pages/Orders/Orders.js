@@ -3,7 +3,7 @@ import { AuthContext } from "../../contexts/AuthProvider";
 import OrderTable from "./OrderTable";
 
 const Orders = () => {
-  const { user, logOut, loading } = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     fetch(`http://localhost:5001/orders?email=${user?.email}`, {

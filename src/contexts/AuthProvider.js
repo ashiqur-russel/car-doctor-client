@@ -23,7 +23,7 @@ const AuthProvider = ({ children }) => {
   };
   const logOut = () => {
     setLoading(true);
-
+    localStorage.removeItem("car-service-token");
     return signOut(auth);
   };
   const login = (email, password) => {
