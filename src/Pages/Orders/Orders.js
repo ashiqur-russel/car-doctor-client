@@ -3,16 +3,25 @@ import { AuthContext } from "../../contexts/AuthProvider";
 import OrderTable from "./OrderTable";
 
 const Orders = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logOut, loading } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
   useEffect(() => {
-    fetch(`http://localhost:5001/orders?email=${user?.email}`)
-      .then((res) => res.json())
+    fetch(`http://localhost:5001/orders?email=${user?.email}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("car-service-token")}`,
+      },
+    })
+      .then((res) => {
+        if (res.status === 401 || res.status === 403) {
+          logOut();
+        }
+        return res.json();
+      })
       .then((data) => {
         setOrders(data);
       })
       .then((err) => console.log(err));
-  }, [user?.email]);
+  }, [user?.email, logOut]);
 
   const handleDelete = (id) => {
     console.log("Order delete clicked", id);
